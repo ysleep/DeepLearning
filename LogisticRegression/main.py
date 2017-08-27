@@ -47,7 +47,7 @@ def optimize(X, Y, w, b, num_iterations, rate_learning, flag_print=False):
             if flag_print:
                 print("after the %dth iteration, the cost is %f" % (i, cost))
 
-    return w, b, costs
+    return dw, db, w, b, costs
 
 
 def predict(w, b, X):
@@ -87,8 +87,8 @@ def main():
     X_test, Y_test = get_image(["cat3.png", "nocat3.jpg"])
     #X_test = X_test[:,0:63]
     #Y_test = Y_test[:, 0:63]
-    w, b = initialization(X_train.shape[0], "zero")
-    w, b, costs = optimize(X_train, Y_train, w, b, 10000, 0.0005, False)
+    w, b = initialization(X_train.shape[0], "random")
+    w, b, costs = optimize(X_train, Y_train, w, b, 10000, 0.005, False)
     print(str(costs))
     Y_prediction_train = predict(w, b, X_train)
     Y_prediction_test = predict(w, b, X_test)
@@ -106,6 +106,19 @@ def main():
 
     return
 
+def test():
+    w, b, X, Y = np.array([[1], [2]]), 2, np.array([[1, 2], [3, 4]]), np.array([[1, 0]])
+    dw, db, w, b, costs = optimize(X, Y, w, b, 100, 0.009, False)
+
+    print("w = " + str(w))
+    print("b = " + str(b))
+    print("dw = " + str(dw))
+    print("db = " + str(db))
+
+    print("predictions = " + str(predict(w, b, X)))
+
+
 
 if __name__ == '__main__':
-    main()
+    #main()
+    test()
