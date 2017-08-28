@@ -16,7 +16,6 @@ def initialization(dim, mode="zero"):
         b = np.random.randn(1, 1)[0]
     return w, b
 
-
 def propagate(X, Y, w, b):
     # calculate the propagate processing
     Z = np.dot(w.T, X) + b
@@ -47,7 +46,7 @@ def optimize(X, Y, w, b, num_iterations, rate_learning, flag_print=False):
             if flag_print:
                 print("after the %dth iteration, the cost is %f" % (i, cost))
 
-    return dw, db, w, b, costs
+    return w, b, costs
 
 
 def predict(w, b, X):
@@ -74,7 +73,7 @@ def get_image(image_name):
                 x_end = (j+1)*image_width
                 y_begin = k*image_height + 2
                 y_end = (k+1)*image_height
-                tmp_image = image[x_begin:x_end, x_begin:x_end, :]
+                tmp_image = image[x_begin:x_end, y_begin:y_end, :]
                 X[:, :, :, i*64+j*8+k] = tmp_image
                 Y[:, i*64+j*8+k] = 1 if i<len(image_name)/2 else 0
 
@@ -82,13 +81,14 @@ def get_image(image_name):
     X = X / 255
     return X, Y
 
+
 def main():
     X_train, Y_train = get_image(["cat1.png", "cat2.png", "nocat1.jpg", "nocat2.jpg"])
     X_test, Y_test = get_image(["cat3.png", "nocat3.jpg"])
     #X_test = X_test[:,0:63]
     #Y_test = Y_test[:, 0:63]
-    w, b = initialization(X_train.shape[0], "random")
-    w, b, costs = optimize(X_train, Y_train, w, b, 10000, 0.005, False)
+    w, b = initialization(X_train.shape[0], "zero")
+    w, b, costs = optimize(X_train, Y_train, w, b, 30000, 0.0005, False)
     print(str(costs))
     Y_prediction_train = predict(w, b, X_train)
     Y_prediction_test = predict(w, b, X_test)
@@ -106,7 +106,8 @@ def main():
 
     return
 
-def test():
+
+def param():
     w, b, X, Y = np.array([[1], [2]]), 2, np.array([[1, 2], [3, 4]]), np.array([[1, 0]])
     dw, db, w, b, costs = optimize(X, Y, w, b, 100, 0.009, False)
 
@@ -118,7 +119,7 @@ def test():
     print("predictions = " + str(predict(w, b, X)))
 
 
-
 if __name__ == '__main__':
-    #main()
-    test()
+    print("hello world")
+    #param()
+    main()
