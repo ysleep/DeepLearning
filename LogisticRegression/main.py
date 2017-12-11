@@ -16,6 +16,7 @@ def initialization(dim, mode="zero"):
         b = np.random.randn(1, 1)[0]
     return w, b
 
+
 def propagate(X, Y, w, b):
     # calculate the propagate processing
     Z = np.dot(w.T, X) + b
@@ -41,7 +42,7 @@ def optimize(X, Y, w, b, num_iterations, rate_learning, flag_print=False):
         w = w - rate_learning * dw
         b = b - rate_learning * db
 
-        if i%100 == 0:
+        if i%1000 == 0:
             costs.append(cost)
             if flag_print:
                 print("after the %dth iteration, the cost is %f" % (i, cost))
@@ -88,7 +89,7 @@ def main():
     #X_test = X_test[:,0:63]
     #Y_test = Y_test[:, 0:63]
     w, b = initialization(X_train.shape[0], "zero")
-    w, b, costs = optimize(X_train, Y_train, w, b, 30000, 0.0005, False)
+    w, b, costs = optimize(X_train, Y_train, w, b, 400000, 0.0005, False)
     print(str(costs))
     Y_prediction_train = predict(w, b, X_train)
     Y_prediction_test = predict(w, b, X_test)

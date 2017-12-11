@@ -1,3 +1,4 @@
 # this ignore file is for develop environment file
 
 LogisticRegression/.idea/
+.idea/
