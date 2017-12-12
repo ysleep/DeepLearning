@@ -23,6 +23,7 @@ init = tf.initialize_all_variables()
 sess = tf.Session()
 sess.run(init)
 
+
 # 拟合平面
 for step in range(0, 201):
     sess.run(train)
