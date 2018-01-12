@@ -1,8 +1,6 @@
-import Tensorflow.mnist.input_data as input_data
+import tensorflow as tf
 
-mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
-
-print(mnist)
-a=0
-a+=1
-b=1
+with tf.Session() as sess:
+    m1 = tf.constant([[1], [2], [3]])
+    m2 = tf.constant([[3, 4, 5], [6, 7, 8]])
+    print(sess.run(m1+m2))
