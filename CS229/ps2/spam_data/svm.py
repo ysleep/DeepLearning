@@ -1,6 +1,12 @@
 import numpy as np
 
+try:
+    xrange
+except NameError:
+    xrange = range
+
 tau = 8.
+
 
 def readMatrix(file):
     fd = open(file, 'r')
@@ -18,6 +24,7 @@ def readMatrix(file):
         matrix[i, k] = v
     category = (np.array(Y) * 2) - 1
     return matrix, tokens, category
+
 
 def svm_train(matrix, category):
     state = {}
@@ -53,6 +60,7 @@ def svm_train(matrix, category):
     ####################
     return state
 
+
 def svm_test(matrix, state):
     M, N = matrix.shape
     output = np.zeros(M)
@@ -69,9 +77,26 @@ def svm_test(matrix, state):
     ###################
     return output
 
+
 def evaluate(output, label):
     error = (output != label).sum() * 1. / len(output)
-    print 'Error: %1.4f' % error
+    print('Error: %1.4f' % error)
+
+
+def different_train_size():
+    list_train_file_suffix = [50, 100, 200, 400, 800, 1400]
+    array_train_size = np.array(list_train_file_suffix)
+    array_test_error = np.zeros(array_train_size.shape)
+    matrix_test, list_token, category_test = readMatrix('MATRIX.TEST')
+
+    for i, suffix in enumerate(list_train_file_suffix):
+        matrix_train, list_train, category_train = readMatrix('MATRIX.TRAIN.' + str(suffix))
+        state = svm_train(matrix_train, category_train)
+        output = svm_test(matrix_test, state)
+        array_test_error[i] = (output != category_test).sum() * 1. / len(output)
+
+    print(array_test_error)
+
 
 def main():
     trainMatrix, tokenlist, trainCategory = readMatrix('MATRIX.TRAIN.400')
@@ -81,7 +106,11 @@ def main():
     output = svm_test(testMatrix, state)
 
     evaluate(output, testCategory)
+
+    # 6(d)
+    different_train_size()
     return
+
 
 if __name__ == '__main__':
     main()
